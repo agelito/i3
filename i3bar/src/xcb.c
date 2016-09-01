@@ -1967,43 +1967,52 @@ void draw_bars(bool unhide) {
                      i3string_as_utf8(ws_walk->name), workspace_width, ws_walk->name_width);
                 color_t fg_color = colors.inactive_ws_fg;
                 color_t bg_color = colors.inactive_ws_bg;
-                color_t border_color = colors.inactive_ws_border;
+                // color_t border_color = colors.inactive_ws_border;
                 if (ws_walk->visible) {
                     if (!ws_walk->focused) {
                         fg_color = colors.active_ws_fg;
                         bg_color = colors.active_ws_bg;
-                        border_color = colors.active_ws_border;
+                        // border_color = colors.active_ws_border;
                     } else {
                         fg_color = colors.focus_ws_fg;
                         bg_color = colors.focus_ws_bg;
-                        border_color = colors.focus_ws_border;
+                        // border_color = colors.focus_ws_border;
                     }
                 }
                 if (ws_walk->urgent) {
                     DLOG("WS %s is urgent!\n", i3string_as_utf8(ws_walk->name));
                     fg_color = colors.urgent_ws_fg;
                     bg_color = colors.urgent_ws_bg;
-                    border_color = colors.urgent_ws_border;
+                    // border_color = colors.urgent_ws_border;
                     unhide = true;
                 }
 
                 /* Draw the border of the button. */
+#if 0
                 draw_util_rectangle(&(outputs_walk->buffer), border_color,
                                     workspace_width,
                                     logical_px(1),
                                     ws_walk->name_width + 2 * logical_px(ws_hoff_px) + 2 * logical_px(1),
-                                    font.height + 2 * logical_px(ws_voff_px) - 2 * logical_px(1));
-
+                                    font.height + 2 * logical_px(ws_voff_px) - 6 * logical_px(1));
+#endif
                 /* Draw the inside of the button. */
-                draw_util_rectangle(&(outputs_walk->buffer), bg_color,
+                draw_util_rectangle(&(outputs_walk->buffer), colors.inactive_ws_bg,
                                     workspace_width + logical_px(1),
                                     2 * logical_px(1),
                                     ws_walk->name_width + 2 * logical_px(ws_hoff_px),
-                                    font.height + 2 * logical_px(ws_voff_px) - 4 * logical_px(1));
+                                    font.height + 2 * logical_px(ws_voff_px) - 8 * logical_px(1));
+
+                /* Draw the selection marker. */
+                draw_util_rectangle(xcb_connection, &(outputs_walk->buffer), bg_color,
+                                    workspace_width + logical_px(1),
+                                    font.height + 2 * logical_px(ws_voff_px) - 4 * logical_px(1),
+                                    ws_walk->name_width + 2 * logical_px(ws_hoff_px),
+                                    2 * logical_px(1));
+                                    
 
                 draw_util_text(ws_walk->name, &(outputs_walk->buffer), fg_color, bg_color,
                                workspace_width + logical_px(ws_hoff_px) + logical_px(1),
-                               logical_px(ws_voff_px),
+                               logical_px(ws_voff_px) - 2,
                                ws_walk->name_width);
 
                 workspace_width += 2 * logical_px(ws_hoff_px) + 2 * logical_px(1) + ws_walk->name_width;
