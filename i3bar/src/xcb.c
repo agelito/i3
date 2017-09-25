@@ -2003,7 +2003,7 @@ void draw_bars(bool unhide) {
                                     font.height + 2 * logical_px(ws_voff_px) - 8 * logical_px(1));
 
                 /* Draw the selection marker. */
-                draw_util_rectangle(xcb_connection, &(outputs_walk->buffer), bg_color,
+                draw_util_rectangle(&(outputs_walk->buffer), bg_color,
                                     workspace_width + logical_px(1),
                                     font.height + 2 * logical_px(ws_voff_px) - 4 * logical_px(1),
                                     ws_walk->name_width + 2 * logical_px(ws_hoff_px),
